@@ -21,11 +21,7 @@
         <tbody>
           <tr>
             <td>
-              <select class="form-select" aria-label="Default select example">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+              <Selectbox />
             </td>
             <td>chauanphu@gmail.com</td>
             <td><Datepicker /></td>
@@ -38,11 +34,7 @@
               />
             </td>
             <td>
-              <select class="form-select" aria-label="Default select example">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+              <Selectbox />
             </td>
             <td><button class="btn btn-danger">Xoa</button></td>
           </tr>
@@ -56,8 +48,9 @@
 // @ is an alias to /src
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import Selectbox from "@/components/Selectbox.vue";
 export default {
   name: "Home",
-  components: { Datepicker },
+  components: { Datepicker, Selectbox },
 };
 </script>
