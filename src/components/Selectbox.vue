@@ -8,7 +8,7 @@
 
 <script>
 export default {
-    name: "Selectbox"
+  name: "Selectbox",
 };
 </script>
 

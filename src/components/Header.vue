@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "Vue_header",
+  name: "Header",
 };
 </script>

@@ -49,6 +49,7 @@
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import Selectbox from "@/components/Selectbox.vue";
+
 export default {
   name: "Home",
   components: { Datepicker, Selectbox },
