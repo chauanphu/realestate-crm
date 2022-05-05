@@ -1,5 +1,6 @@
 <template>
   <Vue_header />
+  <router-view></router-view>
 </template>
 
 <script>
