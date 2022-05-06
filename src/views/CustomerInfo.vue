@@ -1,5 +1,5 @@
 <template>
-  <div>Cards</div>
+  <div class="container-fluid px-4">Customer</div>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import CustomerCard from "../views/CustomerCard.vue";
+import CustomerCards from "../views/CustomerCards.vue";
 const routes = [
   {
     path: "/",
@@ -10,7 +10,7 @@ const routes = [
   {
     path: "/cards",
     name: "CustomerCard",
-    component: CustomerCard,
+    component: CustomerCards,
   },
 ];
 

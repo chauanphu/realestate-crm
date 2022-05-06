@@ -14,7 +14,6 @@
             <th scope="col">Email</th>
             <th scope="col">Lich hen sap toi</th>
             <th scope="col">Noi dung</th>
-            <th scope="col">Tien do</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -24,7 +23,7 @@
               <Selectbox />
             </td>
             <td>chauanphu@gmail.com</td>
-            <td><Datepicker /></td>
+            <td class="w-25"><Datepicker /></td>
             <td>
               <input
                 class="form-control"
@@ -32,9 +31,6 @@
                 placeholder="Default input"
                 aria-label="default input example"
               />
-            </td>
-            <td>
-              <Selectbox />
             </td>
             <td><button class="btn btn-danger">Xoa</button></td>
           </tr>
