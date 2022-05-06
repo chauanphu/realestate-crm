@@ -15,7 +15,12 @@ const routes = [
     component: CustomerCards,
   },
   {
-    path: "/info/",
+    path: "/info",
+    name: "CustomerInfo",
+    component: CustomerInfo,
+  },
+  {
+    path: "/info/:id",
     name: "CustomerInfo",
     component: CustomerInfo,
   },

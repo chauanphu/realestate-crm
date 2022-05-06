@@ -1,6 +1,8 @@
 <template>
   <div class="container-fluid px-4">
-    <router-link :to="{ name: 'CustomerInfo' }" class="btn btn-success mb-4"
+    <router-link
+      :to="{ name: 'CustomerInfo', params: { id: 'new' } }"
+      class="btn btn-success mb-4"
       >Them</router-link
     >
     <div class="row row-cols-4">
@@ -13,7 +15,7 @@
             content.
           </p>
           <router-link
-            :to="{ name: 'CustomerInfo' }"
+            :to="{ name: 'CustomerInfo', params: { id: customer.id } }"
             class="btn btn-primary me-2"
             >Chinh sua</router-link
           >

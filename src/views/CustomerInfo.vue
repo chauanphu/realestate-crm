@@ -73,9 +73,19 @@
 
 <script>
 import Datepicker from "@vuepic/vue-datepicker";
+import store from "@/store";
+import { useRoute } from "vue-router";
 
 export default {
   components: { Datepicker },
+  setup() {
+    const route = useRoute();
+    console.log(route.params.id);
+    const customer = store.state.customers.filter((customer) => {
+      customer.id == route.params.id;
+    });
+    return { customer };
+  },
 };
 </script>
 
