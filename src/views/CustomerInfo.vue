@@ -10,7 +10,8 @@
               type="email"
               class="form-control"
               id="exampleFormControlInput1"
-              placeholder="name@example.com"
+              placeholder="Ho va Ten"
+              v-model="customer.name"
             />
           </div>
           <div class="form-group mb-2">
@@ -19,7 +20,8 @@
               type="email"
               class="form-control"
               id="exampleFormControlInput1"
-              placeholder="name@example.com"
+              placeholder="email"
+              v-model="customer.email"
             />
           </div>
           <div class="form-group mb-2">
@@ -29,6 +31,7 @@
               class="form-control"
               id="exampleFormControlInput1"
               placeholder="name@example.com"
+              v-model="customer.phone"
             />
           </div>
           <div class="form-group mb-2">
@@ -38,6 +41,7 @@
               class="form-control"
               id="exampleFormControlInput1"
               placeholder="name@example.com"
+              v-model="customer.age"
             />
           </div>
         </form>
@@ -75,15 +79,23 @@
 import Datepicker from "@vuepic/vue-datepicker";
 import store from "@/store";
 import { useRoute } from "vue-router";
+import { ref } from "@vue/reactivity";
 
 export default {
   components: { Datepicker },
   setup() {
     const route = useRoute();
-    console.log(route.params.id);
-    const customer = store.state.customers.filter((customer) => {
-      customer.id == route.params.id;
+    let customer = ref({
+      name: "",
+      email: "",
+      phone: "",
+      age: 0,
     });
+    if (route.params.id != "new") {
+      customer = store.state.customers.find((customer) => {
+        return customer.id == route.params.id;
+      });
+    }
     return { customer };
   },
 };
