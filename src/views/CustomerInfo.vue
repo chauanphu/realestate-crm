@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-4">
-    <router-link to="/cards" class="btn btn-light mb-4">Quay lai</router-link>
+    <router-link to="/cards" class="btn btn-primary mb-4">Save</router-link>
     <div class="row">
       <div class="col-4">
         <form>
@@ -10,7 +10,6 @@
               type="email"
               class="form-control"
               id="exampleFormControlInput1"
-              placeholder="Ho va Ten"
               v-model="customer.name"
             />
           </div>
@@ -20,7 +19,6 @@
               type="email"
               class="form-control"
               id="exampleFormControlInput1"
-              placeholder="email"
               v-model="customer.email"
             />
           </div>
@@ -30,7 +28,6 @@
               type="email"
               class="form-control"
               id="exampleFormControlInput1"
-              placeholder="name@example.com"
               v-model="customer.phone"
             />
           </div>
@@ -40,7 +37,6 @@
               type="email"
               class="form-control"
               id="exampleFormControlInput1"
-              placeholder="name@example.com"
               v-model="customer.age"
             />
           </div>
@@ -52,21 +48,27 @@
             <tr>
               <th scope="col">Lich hen sap toi</th>
               <th scope="col">Noi dung</th>
-              <th scope="col"><button class="btn btn-success">Them</button></th>
+              <th scope="col">
+                <button class="btn btn-success" @click="addEvent">Them</button>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="w-25"><Datepicker /></td>
+            <tr v-for="(event, index) in customer.events" :key="event.id">
+              <td class="w-25"><Datepicker v-model="event.date" /></td>
               <td>
                 <input
                   class="form-control"
                   type="text"
-                  placeholder="Default input"
                   aria-label="default input example"
+                  v-model="event.content"
                 />
               </td>
-              <td><button class="btn btn-danger">Xoa</button></td>
+              <td>
+                <button class="btn btn-danger" @click="deleteEvent(index)">
+                  Xoa
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -79,24 +81,35 @@
 import Datepicker from "@vuepic/vue-datepicker";
 import store from "@/store";
 import { useRoute } from "vue-router";
-import { ref } from "@vue/reactivity";
+import { reactive } from "@vue/reactivity";
 
 export default {
   components: { Datepicker },
   setup() {
+    // Set up
     const route = useRoute();
-    let customer = ref({
+    let customer = reactive({
+      id: 0,
       name: "",
       email: "",
       phone: "",
       age: 0,
+      events: [],
     });
     if (route.params.id != "new") {
       customer = store.state.customers.find((customer) => {
         return customer.id == route.params.id;
       });
     }
-    return { customer };
+
+    const addEvent = () => {
+      console.log(customer);
+      customer.events.push({ date: "", content: "" });
+    };
+    const deleteEvent = (id) => {
+      customer.events.splice(id, 1);
+    };
+    return { customer, addEvent, deleteEvent };
   },
 };
 </script>
