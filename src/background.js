@@ -17,7 +17,7 @@ async function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      devTools: false,
+      //devTools: false,
       // Required for Spectron testing
       enableRemoteModule: true,
 
