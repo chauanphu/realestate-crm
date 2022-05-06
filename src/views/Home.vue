@@ -1,11 +1,6 @@
 <template>
   <div class="container-fluid px-4">
-    <div class="row">
-      <div class="col">
-        <button type="button" class="btn btn-success">Them</button>
-      </div>
-    </div>
-    <hr />
+    <button type="button" class="btn btn-success mb-4">Them</button>
     <div class="row">
       <table class="table table-hover align-middle">
         <thead>
