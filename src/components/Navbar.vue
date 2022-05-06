@@ -1,14 +1,14 @@
 <template>
-  <ul class="container mx-auto bg-white py-10 px-10 flex flex-row border-b-4">
-    <li>
-      <router-link to="/" class="p-3 text-blue-800">Home</router-link>
-    </li>
-    <li>
-      <router-link to="./transaction" class="p-3 text-blue-800"
-        >Lich su</router-link
-      >
-    </li>
-  </ul>
+  <nav class="navbar navbar-expand-lg navbar-light px-2 mb-4 bg-light">
+    <ul class="navbar-nav d-flex justify-content-end">
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/cards" class="nav-link">Features</router-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
@@ -24,5 +24,6 @@ export default {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   border-width: 2px;
+  /* color: blue; */
 }
 </style>

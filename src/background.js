@@ -15,8 +15,8 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    titleBarStyle: "hidden",
     webPreferences: {
+      devTools: false,
       // Required for Spectron testing
       enableRemoteModule: true,
 
@@ -25,6 +25,7 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
     },
+    resizable: false,
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
