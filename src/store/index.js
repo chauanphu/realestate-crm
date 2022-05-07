@@ -1,21 +1,27 @@
 import { createStore } from "vuex";
 
 export default createStore({
-  state() {
-    return {
-      customers: [
-        {
-          id: 0,
-          name: "Chau An Phu",
-          email: "chauanphu@gmail.com",
-          phone: "0927933864",
-          age: 18,
-          events: [],
-        },
-      ],
-    };
+  state: {
+    customers: [],
   },
-  mutations: {},
+  mutations: {
+    add_customer(state, payload) {
+      state.customers.push(payload.customer);
+      console.log(state.customers);
+    },
+    edit_customer(state, payload) {
+      let index = state.customers.findIndex((customer) => {
+        return (customer.id = payload.id);
+      });
+      state.customers[index] = payload.customer;
+    },
+    delete_customer(state, id) {
+      let index = state.customers.findIndex((customer) => {
+        return (customer.id = id);
+      });
+      state.customers.splice(index, 1);
+    },
+  },
   actions: {},
   modules: {},
 });
