@@ -16,7 +16,7 @@ export default createStore({
 
       for (let i = 0; i < state.customers.length; i++) {
         let customer = state.customers[i];
-        if (customer.event) {
+        if (customer.events !== undefined) {
           for (let h = 0; h < customer.events.length; h++) {
             let event = customer.events[h];
             let item = {

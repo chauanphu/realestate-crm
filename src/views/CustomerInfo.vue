@@ -146,7 +146,6 @@ export default {
     const addEvent = () => {
       if (!customer.events) customer.events = [];
       customer.events.push({ date: "", content: "", progress: "" });
-      console.log(customer.events);
     };
     // Del
     const deleteEvent = (id) => {
@@ -182,7 +181,6 @@ export default {
             id: this.customer.id,
             customer: this.customer,
           });
-          console.log(this.customer.id);
         }
         this.$router.back();
       }

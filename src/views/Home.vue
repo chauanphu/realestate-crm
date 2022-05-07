@@ -137,6 +137,7 @@ export default {
   components: { Datepicker, Modal, vSelect },
   setup() {
     const events = store.getters.get_all_events;
+    console.log(events);
     const identities = store.getters.get_all_identities;
 
     //Format date picker
