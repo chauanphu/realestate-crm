@@ -31,8 +31,8 @@
           </div>
           <div class="form-group mb-2 w-50">
             <label>Lich hen</label>
-            <Datepicker v-model="customer.date" :format="format" />
-            <p v-if="v$.customer.date.$error" class="text-danger">
+            <Datepicker v-model="customer.event.date" :format="format" />
+            <p v-if="v$.customer.event.date.$error" class="text-danger">
               Vui long cho ngay
             </p>
           </div>
@@ -41,9 +41,9 @@
             <input
               type="text"
               class="form-control"
-              v-model="customer.content"
+              v-model="customer.event.content"
             />
-            <p v-if="v$.customer.content.$error" class="text-danger">
+            <p v-if="v$.customer.event.content.$error" class="text-danger">
               Yêu cầu nhập noi dung
             </p>
           </div>
@@ -52,7 +52,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="customer.progress"
+              v-model="customer.event.progress"
             />
           </div>
         </form>
@@ -89,14 +89,14 @@
               <p>{{ event.email }}</p>
             </td>
             <td class="w-25">
-              <Datepicker v-model="event.date" :format="format" />
+              <Datepicker v-model="event.event.date" :format="format" />
             </td>
             <td>
               <input
                 class="form-control"
                 type="text"
                 aria-label="default input example"
-                v-model="event.content"
+                v-model="event.event.content"
               />
             </td>
             <td>
@@ -104,7 +104,7 @@
                 class="form-control"
                 type="text"
                 aria-label="default input example"
-                v-model="event.progress"
+                v-model="event.event.progress"
               />
             </td>
             <td>
@@ -157,9 +157,11 @@ export default {
       id: -1,
       name: "",
       email: "",
-      date: "",
-      content: "",
-      progress: "",
+      event: {
+        date: "",
+        content: "",
+        progress: "",
+      },
     });
     return { events, format, identities, customer, v$ };
   },
@@ -173,8 +175,10 @@ export default {
     return {
       customer: {
         name: { required },
-        date: { required },
-        content: { required },
+        event: {
+          date: { required },
+          content: { required },
+        },
       },
     };
   },
@@ -183,11 +187,15 @@ export default {
       this.customer.id = this.selected.id;
       this.customer.name = this.selected.name;
       this.customer.email = this.selected.email;
-      this.customer.date = this.customer.date.toLocaleString();
+      this.customer.event.date = this.customer.event.date.toLocaleString();
 
       this.v$.$validate();
       if (!this.v$.$error) {
-        console.log("OK");
+        store.commit("add_event", {
+          id: this.customer.id,
+          event: this.customer.event,
+        });
+        this.$router.back()
       }
     },
   },

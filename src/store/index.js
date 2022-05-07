@@ -3,8 +3,8 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     customers: [
-      { id: 0, name: "A", email: "a@a.com", age: 25 },
-      { id: 1, name: "B", email: "b@b.com", age: 18 },
+      { id: 0, name: "A", email: "a@a.com", age: 25, events: [] },
+      { id: 1, name: "B", email: "b@b.com", age: 18, events: [] },
     ],
   },
   getters: {
@@ -22,9 +22,7 @@ export default createStore({
             let item = {
               name: customer.name,
               email: customer.email,
-              date: event.date,
-              content: event.content,
-              progress: event.progress,
+              event: event,
             };
             events.push(item);
           }
@@ -55,11 +53,28 @@ export default createStore({
       });
       state.customers[index] = payload.customer;
     },
+    /**
+     * Delete customer by ID
+     * @param {*} state
+     * @param {*} id
+     */
     delete_customer(state, id) {
       let index = state.customers.findIndex((customer) => {
         return customer.id == id;
       });
       if (index > -1) state.customers.splice(index, 1);
+    },
+    add_event(state, payload) {
+      let index_customer = state.customers.findIndex((customer) => {
+        return customer.id == payload.id;
+      });
+      console.log(index_customer);
+      state.customers[index_customer].events.push(payload.event);
+      console.log(state.customers);
+      // let index_date = state.customers[index_customer].events.findIndex((event) => {
+      //   return event.date == payload.date;
+      // });
+      // state.customers[index_customer].events[index_date].date = payload
     },
   },
   actions: {},
