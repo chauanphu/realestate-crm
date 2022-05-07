@@ -9,8 +9,10 @@
           class="form-control"
           id="exampleFormControlInput1"
           v-model="customer.name"
-          required
         />
+        <p v-if="v$.customer.name.$error" class="text-danger">
+          Yêu cầu nhập tên
+        </p>
       </div>
       <div class="form-group mb-2 col">
         <label for="exampleFormControlInput1">Email</label>
@@ -19,8 +21,10 @@
           class="form-control"
           id="exampleFormControlInput1"
           v-model="customer.email"
-          required
         />
+        <p v-if="v$.customer.email.$error" class="text-danger">
+          Yeu cau kiem tra lai email
+        </p>
       </div>
       <div class="form-group mb-2 col">
         <label for="exampleFormControlInput1">SDT</label>
@@ -39,6 +43,9 @@
           id="exampleFormControlInput1"
           v-model.number="customer.age"
         />
+        <p v-if="v$.customer.age.$error" class="text-danger">
+          Tuoi khong hop le
+        </p>
       </div>
     </form>
     <div class="row">
@@ -91,12 +98,15 @@ import Datepicker from "@vuepic/vue-datepicker";
 import store from "@/store";
 import { useRoute } from "vue-router";
 import { reactive, ref } from "@vue/reactivity";
+import useVuelidate from "@vuelidate/core";
+import { minValue, required, email } from "@vuelidate/validators";
 
 export default {
   components: { Datepicker },
   setup() {
-    // Set up
+    /* Set up */
     const route = useRoute();
+
     let customer = reactive({
       id: 0,
       name: "",
@@ -108,12 +118,6 @@ export default {
     //Format date picker
     let format = ref(new Date());
     format = (date) => {
-      // const day = date.getDate();
-      // const month = date.getMonth() + 1;
-      // const year = date.getFullYear();
-      // const hour = date.getHours();
-      // const minute = date.getMinutes();
-      // return new Date(`${day}/${month}/${year} ${hour}:${minute}`);
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -138,6 +142,8 @@ export default {
       }
     }
 
+    const v$ = useVuelidate();
+
     /* EVENTS CRUD */
     // Add
     const addEvent = () => {
@@ -147,20 +153,40 @@ export default {
     const deleteEvent = (id) => {
       customer.events.splice(id, 1);
     };
-    const save = () => {
-      if (route.params.id == "new") {
-        customer.events.forEach((event) => {
-          event.date = event.date.toLocaleString();
-        });
-        store.commit("add_customer", { customer: customer });
-      } else {
-        customer.events.forEach((event) => {
-          event.date = event.date.toLocaleString();
-        });
-        store.commit("edit_customer", { id: customer.id, customer: customer });
-      }
+    return { customer, addEvent, deleteEvent, format, v$, route };
+  },
+  validations() {
+    return {
+      customer: {
+        name: { required },
+        email: { required, email },
+        age: { required, minValue: minValue(10) },
+        events: [],
+      },
     };
-    return { customer, addEvent, deleteEvent, save, format };
+  },
+  methods: {
+    save() {
+      // Validate the form
+      this.v$.$validate();
+      if (!this.v$.customer.$error) {
+        if (this.route.params.id == "new") {
+          this.customer.events.forEach((event) => {
+            event.date = event.date.toLocaleString();
+          });
+          store.commit("add_customer", { customer: this.customer });
+        } else {
+          this.customer.events.forEach((event) => {
+            event.date = event.date.toLocaleString();
+          });
+          store.commit("edit_customer", {
+            id: this.customer.id,
+            customer: this.customer,
+          });
+        }
+        this.$router.back();
+      }
+    },
   },
 };
 </script>

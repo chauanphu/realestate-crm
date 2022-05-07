@@ -7,7 +7,6 @@ export default createStore({
   mutations: {
     add_customer(state, payload) {
       state.customers.push(payload.customer);
-      console.log(state.customers);
     },
     edit_customer(state, payload) {
       let index = state.customers.findIndex((customer) => {
