@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <!-- use the modal component, pass in the prop -->
-    <Modal :show="showModal" @close="showModal = false">
+    <Modal :show="showModal" @save="save" @close="showModal = false">
       <template #header>
         <h3>Them lich hen</h3>
       </template>
@@ -10,41 +10,50 @@
           <div class="row">
             <div class="form-group mb-2 col">
               <label>Ho va Ten</label>
-              <v-select></v-select>
-              <!-- <p v-if="v$.customer.name.$error" class="text-danger">
-                Yêu cầu nhập tên
-              </p> -->
+              <v-select
+                label="name"
+                :options="identities"
+                v-model="selected"
+              ></v-select>
+              <p v-if="v$.customer.name.$error" class="text-danger">
+                Vui long chon khach hang
+              </p>
             </div>
             <div class="form-group mb-2 col">
               <label for="exampleFormControlInput1">Email</label>
               <input
                 type="email"
                 class="form-control"
-                id="exampleFormControlInput1"
+                v-model="selected.email"
                 disabled
               />
-              <!-- <p v-if="v$.customer.email.$error" class="text-danger">
-                Yeu cau kiem tra lai email
-              </p> -->
             </div>
-          </div>
-          <div class="form-group mb-2 col w-75">
-            <label>Noi dung</label>
-            <input type="text" class="form-control" />
-            <!-- <p v-if="v$.customer.name.$error" class="text-danger">
-                Yêu cầu nhập tên
-              </p> -->
-          </div>
-          <div class="form-group mb-2 col w-75">
-            <label>Tien do</label>
-            <input type="text" class="form-control" />
-            <!-- <p v-if="v$.customer.name.$error" class="text-danger">
-                Yêu cầu nhập tên
-              </p> -->
           </div>
           <div class="form-group mb-2 w-50">
             <label>Lich hen</label>
-            <Datepicker v-model="form_date" :format="format" />
+            <Datepicker v-model="customer.date" :format="format" />
+            <p v-if="v$.customer.date.$error" class="text-danger">
+              Vui long cho ngay
+            </p>
+          </div>
+          <div class="form-group mb-2 col w-75">
+            <label>Noi dung</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="customer.content"
+            />
+            <p v-if="v$.customer.content.$error" class="text-danger">
+              Yêu cầu nhập noi dung
+            </p>
+          </div>
+          <div class="form-group mb-2 col w-75">
+            <label>Tien do</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="customer.progress"
+            />
           </div>
         </form>
       </template>
@@ -112,18 +121,23 @@
 
 <script>
 // @ is an alias to /src
-import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import store from "@/store";
-import { ref } from "@vue/reactivity";
+import Datepicker from "@vuepic/vue-datepicker";
 import Modal from "@/components/Modal.vue";
 import vSelect from "vue-select";
 
+import store from "@/store";
+import { reactive, ref } from "@vue/reactivity";
+
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+// Main Script
 export default {
   name: "Home",
   components: { Datepicker, Modal, vSelect },
   setup() {
     const events = store.getters.get_all_events;
+    const identities = store.getters.get_all_identities;
 
     //Format date picker
     let format = ref(new Date());
@@ -136,12 +150,45 @@ export default {
 
       return `${day}/${month}/${year} ${hour}:${minute}`;
     };
-    return { events, format };
+    const v$ = useVuelidate();
+
+    const customer = reactive({
+      id: -1,
+      name: "",
+      email: "",
+      date: "",
+      content: "",
+      progress: "",
+    });
+    return { events, format, identities, customer, v$ };
   },
   data() {
     return {
       showModal: false,
+      selected: { id: -1, name: "", email: "" },
     };
+  },
+  validations() {
+    return {
+      customer: {
+        name: { required },
+        date: { required },
+        content: { required },
+      },
+    };
+  },
+  methods: {
+    save() {
+      this.customer.id = this.selected.id;
+      this.customer.name = this.selected.name;
+      this.customer.email = this.selected.email;
+      this.customer.date = this.customer.date.toLocaleString();
+
+      this.v$.$validate();
+      if (!this.v$.$error) {
+        console.log("OK");
+      }
+    },
   },
 };
 </script>

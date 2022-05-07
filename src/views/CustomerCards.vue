@@ -62,6 +62,7 @@ export default {
       return newest[0];
     };
     const delete_customer = (id) => {
+      console.log(id);
       store.commit("delete_customer", id);
     };
     return { customers, delete_customer, upcoming_event };

@@ -108,7 +108,7 @@ export default {
     const route = useRoute();
 
     let customer = reactive({
-      id: 0,
+      id: -1,
       name: "",
       email: "",
       phone: "",
@@ -141,7 +141,6 @@ export default {
         customer.id = 0;
       }
     }
-
     const v$ = useVuelidate();
 
     /* EVENTS CRUD */

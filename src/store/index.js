@@ -26,13 +26,20 @@ export default createStore({
       events.sort((a, b) => {
         return new Date(a.date) - new Date(b.date);
       });
-      console.log(events);
       return events;
+    },
+
+    get_all_identities(state) {
+      let identity = state.customers.map((customer) => {
+        return { id: customer.id, name: customer.name, email: customer.email };
+      });
+      return identity;
     },
   },
   mutations: {
     add_customer(state, payload) {
       state.customers.push(payload.customer);
+      console.log(state.customers);
     },
     edit_customer(state, payload) {
       let index = state.customers.findIndex((customer) => {
@@ -42,9 +49,10 @@ export default createStore({
     },
     delete_customer(state, id) {
       let index = state.customers.findIndex((customer) => {
-        return (customer.id = id);
+        return customer.id == id;
       });
-      state.customers.splice(index, 1);
+      // console.log(index);
+      if (index > -1) state.customers.splice(index, 1);
     },
   },
   actions: {},
