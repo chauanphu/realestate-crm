@@ -14,6 +14,7 @@ async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     autoHideMenuBar: true,
+    title: "Customer Manager 4.0",
     width: 1400,
     height: 800,
     webPreferences: {
