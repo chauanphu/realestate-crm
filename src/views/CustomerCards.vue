@@ -26,7 +26,7 @@
             <router-link
               :to="{ name: 'CustomerInfo', params: { id: customer.id } }"
               class="btn btn-primary me-2"
-              >{{ customer.id }}</router-link
+              >Chinh sua</router-link
             >
             <button
               @click="delete_customer(customer.id)"

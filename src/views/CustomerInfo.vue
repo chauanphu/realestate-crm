@@ -186,23 +186,6 @@ export default {
       }
     },
   },
-  beforeCreate() {
-    // If there is create customer: set the next id
-    // else: get the current id
-    // if (this.route.params.id != "new") {
-    //   this.customer = store.state.customers.find((customer) => {
-    //     return customer.id == this.route.params.id;
-    //   });
-    // } else {
-    //   let length = store.state.customers.length;
-    //   if (length > 0) {
-    //     this.customer.id = store.state.customers[length - 1].id + 1;
-    //   } else {
-    //     this.customer.id = 0;
-    //   }
-    // }
-    // console.log("This id is:", this.customer.id);
-  },
 };
 </script>
 

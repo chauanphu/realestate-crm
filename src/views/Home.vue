@@ -108,9 +108,11 @@
               />
             </td>
             <td>
-              <button class="btn btn-danger" @click="deleteEvent(index)">
-                Xoa
-              </button>
+              <router-link
+                :to="{ name: 'CustomerInfo', params: { id: event.id } }"
+                class="btn btn-primary me-2"
+                >Chinh sua</router-link
+              >
             </td>
           </tr>
         </tbody>
@@ -137,7 +139,6 @@ export default {
   components: { Datepicker, Modal, vSelect },
   setup() {
     const events = store.getters.get_all_events;
-    console.log(events);
     const identities = store.getters.get_all_identities;
 
     //Format date picker
@@ -195,7 +196,8 @@ export default {
           id: this.customer.id,
           event: this.customer.event,
         });
-        this.$router.back()
+        this.showModal = false;
+        this.events = store.getters.get_all_events;
       }
     },
   },

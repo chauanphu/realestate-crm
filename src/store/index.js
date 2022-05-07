@@ -20,6 +20,7 @@ export default createStore({
           for (let h = 0; h < customer.events.length; h++) {
             let event = customer.events[h];
             let item = {
+              id: customer.id,
               name: customer.name,
               email: customer.email,
               event: event,
