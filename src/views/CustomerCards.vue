@@ -9,7 +9,9 @@
       <div class="card col" v-for="customer in customers" :key="customer.id">
         <div class="card-header">{{ customer.name }}</div>
         <div class="card-body">
-          <div v-if="customer.events.length > 0">
+          <div
+            v-if="customer.events !== undefined && customer.events.length > 0"
+          >
             <h5 class="card-title">
               {{ upcoming_event(customer.events).date }}
             </h5>
@@ -24,7 +26,7 @@
             <router-link
               :to="{ name: 'CustomerInfo', params: { id: customer.id } }"
               class="btn btn-primary me-2"
-              >Chinh sua</router-link
+              >{{ customer.id }}</router-link
             >
             <button
               @click="delete_customer(customer.id)"
@@ -43,10 +45,18 @@
 import store from "@/store";
 export default {
   setup() {
-    const customers = store.state.customers;
+    // Get Customer Infos
+    const customers = store.getters.get_all_customers;
 
-    const upcoming_event = (events) => {
-      if (!events || events.length == 0) {
+    const delete_customer = (id) => {
+      store.commit("delete_customer", id);
+    };
+    return { customers, delete_customer };
+  },
+  methods: {
+    // Choose the closes day
+    upcoming_event(events) {
+      if (!events.length || events.length == 0) {
         return { date: "", content: "" };
       }
       // If there is 1 event, return it
@@ -60,12 +70,7 @@ export default {
       });
 
       return newest[0];
-    };
-    const delete_customer = (id) => {
-      console.log(id);
-      store.commit("delete_customer", id);
-    };
-    return { customers, delete_customer, upcoming_event };
+    },
   },
 };
 </script>

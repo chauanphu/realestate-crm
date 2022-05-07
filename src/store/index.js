@@ -2,23 +2,32 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    customers: [],
+    customers: [
+      { id: 0, name: "A", email: "a@a.com", age: 25 },
+      { id: 1, name: "B", email: "b@b.com", age: 18 },
+    ],
   },
   getters: {
+    get_all_customers(state) {
+      return state.customers;
+    },
     get_all_events(state) {
       let events = [];
+
       for (let i = 0; i < state.customers.length; i++) {
         let customer = state.customers[i];
-        for (let h = 0; h < customer.events.length; h++) {
-          let event = customer.events[h];
-          let item = {
-            name: customer.name,
-            email: customer.email,
-            date: event.date,
-            content: event.content,
-            progress: event.progress,
-          };
-          events.push(item);
+        if (customer.event) {
+          for (let h = 0; h < customer.events.length; h++) {
+            let event = customer.events[h];
+            let item = {
+              name: customer.name,
+              email: customer.email,
+              date: event.date,
+              content: event.content,
+              progress: event.progress,
+            };
+            events.push(item);
+          }
         }
       }
 
@@ -39,11 +48,10 @@ export default createStore({
   mutations: {
     add_customer(state, payload) {
       state.customers.push(payload.customer);
-      console.log(state.customers);
     },
     edit_customer(state, payload) {
       let index = state.customers.findIndex((customer) => {
-        return (customer.id = payload.id);
+        return customer.id == payload.id;
       });
       state.customers[index] = payload.customer;
     },
@@ -51,7 +59,6 @@ export default createStore({
       let index = state.customers.findIndex((customer) => {
         return customer.id == id;
       });
-      // console.log(index);
       if (index > -1) state.customers.splice(index, 1);
     },
   },

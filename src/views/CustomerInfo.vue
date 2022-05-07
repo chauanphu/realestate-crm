@@ -61,7 +61,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(event, index) in customer.events" :key="event.id">
+          <tr v-for="event in customer.events" :key="event.id">
             <td class="w-25">
               <Datepicker v-model="event.date" :format="format" />
             </td>
@@ -82,7 +82,7 @@
               />
             </td>
             <td>
-              <button class="btn btn-danger" @click="deleteEvent(index)">
+              <button class="btn btn-danger" @click="deleteEvent(event.id)">
                 Xoa
               </button>
             </td>
@@ -106,7 +106,6 @@ export default {
   setup() {
     /* Set up */
     const route = useRoute();
-
     let customer = reactive({
       id: -1,
       name: "",
@@ -115,20 +114,6 @@ export default {
       age: 0,
       events: [],
     });
-    //Format date picker
-    let format = ref(new Date());
-    format = (date) => {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      const hour = date.getHours();
-      const minute = date.getMinutes();
-
-      return `${day}/${month}/${year} ${hour}:${minute}`;
-    };
-
-    // If there is create customer: set the next id
-    // else: get the current id
     if (route.params.id != "new") {
       customer = store.state.customers.find((customer) => {
         return customer.id == route.params.id;
@@ -141,12 +126,27 @@ export default {
         customer.id = 0;
       }
     }
+    console.log("This id is:", customer.id);
+    //Format date picker
+    let format = ref(new Date());
+    format = (date) => {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const hour = date.getHours();
+      const minute = date.getMinutes();
+
+      return `${day}/${month}/${year} ${hour}:${minute}`;
+    };
+
     const v$ = useVuelidate();
 
     /* EVENTS CRUD */
     // Add
     const addEvent = () => {
+      if (!customer.events) customer.events = [];
       customer.events.push({ date: "", content: "", progress: "" });
+      console.log(customer.events);
     };
     // Del
     const deleteEvent = (id) => {
@@ -160,7 +160,6 @@ export default {
         name: { required },
         email: { required, email },
         age: { required, minValue: minValue(10) },
-        events: [],
       },
     };
   },
@@ -170,9 +169,10 @@ export default {
       this.v$.$validate();
       if (!this.v$.customer.$error) {
         if (this.route.params.id == "new") {
-          this.customer.events.forEach((event) => {
-            event.date = event.date.toLocaleString();
-          });
+          if (this.customer.events)
+            this.customer.events.forEach((event) => {
+              event.date = event.date.toLocaleString();
+            });
           store.commit("add_customer", { customer: this.customer });
         } else {
           this.customer.events.forEach((event) => {
@@ -182,10 +182,28 @@ export default {
             id: this.customer.id,
             customer: this.customer,
           });
+          console.log(this.customer.id);
         }
         this.$router.back();
       }
     },
+  },
+  beforeCreate() {
+    // If there is create customer: set the next id
+    // else: get the current id
+    // if (this.route.params.id != "new") {
+    //   this.customer = store.state.customers.find((customer) => {
+    //     return customer.id == this.route.params.id;
+    //   });
+    // } else {
+    //   let length = store.state.customers.length;
+    //   if (length > 0) {
+    //     this.customer.id = store.state.customers[length - 1].id + 1;
+    //   } else {
+    //     this.customer.id = 0;
+    //   }
+    // }
+    // console.log("This id is:", this.customer.id);
   },
 };
 </script>
