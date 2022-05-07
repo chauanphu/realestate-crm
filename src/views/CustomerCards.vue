@@ -58,9 +58,6 @@ export default {
       newest.sort((a, b) => {
         return new Date(a.date) - new Date(b.date);
       });
-      // let newest = array.sort((a, b) => {
-      //   return new Date(a).valueOf() - new Date(b).valueOf();
-      // });
 
       return newest[0];
     };
