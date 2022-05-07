@@ -1,82 +1,87 @@
 <template>
   <div class="container-fluid px-4">
     <button @click="save" class="btn btn-primary mb-4">Save</button>
+    <form class="row row-cols-2 w-50">
+      <div class="form-group mb-2 col">
+        <label for="exampleFormControlInput1">Ho va Ten</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput1"
+          v-model="customer.name"
+          required
+        />
+      </div>
+      <div class="form-group mb-2 col">
+        <label for="exampleFormControlInput1">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleFormControlInput1"
+          v-model="customer.email"
+          required
+        />
+      </div>
+      <div class="form-group mb-2 col">
+        <label for="exampleFormControlInput1">SDT</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="exampleFormControlInput1"
+          v-model="customer.phone"
+        />
+      </div>
+      <div class="form-group mb-2 col">
+        <label for="exampleFormControlInput1">Tuoi</label>
+        <input
+          type="number"
+          class="form-control"
+          id="exampleFormControlInput1"
+          v-model.number="customer.age"
+        />
+      </div>
+    </form>
     <div class="row">
-      <div class="col-4">
-        <form>
-          <div class="form-group mb-2">
-            <label for="exampleFormControlInput1">Ho va Ten</label>
-            <input
-              type="text"
-              class="form-control"
-              id="exampleFormControlInput1"
-              v-model="customer.name"
-              required
-            />
-          </div>
-          <div class="form-group mb-2">
-            <label for="exampleFormControlInput1">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="exampleFormControlInput1"
-              v-model="customer.email"
-              required
-            />
-          </div>
-          <div class="form-group mb-2">
-            <label for="exampleFormControlInput1">SDT</label>
-            <input
-              type="tel"
-              class="form-control"
-              id="exampleFormControlInput1"
-              v-model="customer.phone"
-            />
-          </div>
-          <div class="form-group mb-2">
-            <label for="exampleFormControlInput1">Tuoi</label>
-            <input
-              type="number"
-              class="form-control"
-              id="exampleFormControlInput1"
-              v-model="customer.age"
-            />
-          </div>
-        </form>
-      </div>
-      <div class="col-8">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th scope="col">Lich hen sap toi</th>
-              <th scope="col">Noi dung</th>
-              <th scope="col">
-                <button class="btn btn-success" @click="addEvent">Them</button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(event, index) in customer.events" :key="event.id">
-              <td class="w-25">
-                <Datepicker v-model="event.date" :format="format" />
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="text"
-                  aria-label="default input example"
-                  v-model="event.content"
-                />
-              </td>
-              <td>
-                <button class="btn btn-danger" @click="deleteEvent(index)">
-                  Xoa
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Lich hen sap toi</th>
+            <th scope="col">Noi dung</th>
+            <th scope="col">Tien do</th>
+            <th scope="col">
+              <button class="btn btn-success" @click="addEvent">Them</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(event, index) in customer.events" :key="event.id">
+            <td class="w-25">
+              <Datepicker v-model="event.date" :format="format" />
+            </td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                aria-label="default input example"
+                v-model="event.content"
+              />
+            </td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                aria-label="default input example"
+                v-model="event.progress"
+              />
+            </td>
+            <td>
+              <button class="btn btn-danger" @click="deleteEvent(index)">
+                Xoa
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -100,8 +105,8 @@ export default {
       age: 0,
       events: [],
     });
+    //Format date picker
     let format = ref(new Date());
-
     format = (date) => {
       // const day = date.getDate();
       // const month = date.getMonth() + 1;
@@ -117,6 +122,7 @@ export default {
 
       return `${day}/${month}/${year} ${hour}:${minute}`;
     };
+
     // If there is create customer: set the next id
     // else: get the current id
     if (route.params.id != "new") {
@@ -132,10 +138,12 @@ export default {
       }
     }
 
-    // Events CRUD
+    /* EVENTS CRUD */
+    // Add
     const addEvent = () => {
-      customer.events.push({ date: "", content: "" });
+      customer.events.push({ date: "", content: "", progress: "" });
     };
+    // Del
     const deleteEvent = (id) => {
       customer.events.splice(id, 1);
     };
