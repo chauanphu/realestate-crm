@@ -3,6 +3,8 @@
 import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
+import db from "./db";
+
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Scheme must be registered before the app is ready
@@ -46,6 +48,7 @@ app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== "darwin") {
+    db.methods.close();
     app.quit();
   }
 });
@@ -77,11 +80,13 @@ if (isDevelopment) {
     process.on("message", (data) => {
       if (data === "graceful-exit") {
         app.quit();
+        db.methods.close();
       }
     });
   } else {
     process.on("SIGTERM", () => {
       app.quit();
+      db.methods.close();
     });
   }
 }
