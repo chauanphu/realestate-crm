@@ -2,6 +2,9 @@ import { createStore } from "vuex";
 import db from "@/db";
 
 export default createStore({
+  state: {
+    due_date: [],
+  },
   getters: {
     // eslint-disable-next-line no-unused-vars
     get_customer: (state) => (id) => {
@@ -26,7 +29,8 @@ export default createStore({
         if (events) {
           // Add new dates
           for (let i = 0; i < events.length; i++) {
-            db.Events.add({ customer_id: new_id, ...events[i] }).then();
+            let event = events[i];
+            db.Events.update({ customer_id: new_id, ...event });
           }
         }
       });
@@ -35,13 +39,12 @@ export default createStore({
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
       db.Customers.update(id, _customer_).then(() => {
-        if (events) {
-          // Clear all date
-          db.Events.delete({ customer_id: id });
-          // Add new dates
-          for (let i = 0; i < events.length; i++) {
-            db.Events.add({ customer_id: id, ...events[i] }).then();
-          }
+        // Clear all date
+        db.Events.delete({ customer_id: id });
+        // Add new dates
+        for (let i = 0; i < events.length; i++) {
+          let event = events[i];
+          db.Events.update({ customer_id: id, ...event });
         }
       });
       // const { id, ..._customer_ } = payload.customer;

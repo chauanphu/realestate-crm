@@ -50,7 +50,6 @@ export default {
     const customers = ref([]);
     store.getters.get_all_customers.then((value) => {
       customers.value = value;
-      console.log(value)
     });
 
     return { customers };

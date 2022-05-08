@@ -35,8 +35,31 @@
 </template>
 
 <script>
+// import store from "@/store";
+// import { useToast, POSITION } from "vue-toastification";
+
 export default {
   name: "Navbar",
+  setup() {
+    // const toast = useToast();
+
+    // const alarm_check = () => {
+    //   store.getters.get_all_events.then((events) => {
+    //     console.log(events);
+    //     events.forEach((event) => {
+    //       if (new Date(event.date) === new Date()) {
+    //         toast.info("My toast content", {
+    //           timeout: 2000,
+    //           position: POSITION.BOTTOM_RIGHT,
+    //         });
+    //       }
+    //     });
+    //   });
+    // };
+
+    // setInterval(alarm_check, 1000);
+    return {};
+  },
 };
 </script>
 

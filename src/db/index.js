@@ -74,6 +74,20 @@ const Events = {
   add(event) {
     return knex("events").insert(event);
   },
+  async update(event) {
+    let check = await this.get_by_id(event);
+    // If do not have id => Add
+    if (!event.id) {
+      return knex("events").insert(event);
+      // If there is no record completely matched
+    } else if (check.length == 0) {
+      let { id, ..._event_ } = event;
+      console.log("updated");
+      return knex("events").where({ id: id }).update(_event_);
+    } else {
+      console.log("skipped");
+    }
+  },
   /**
    *
    * @param {object} id id or customer_id

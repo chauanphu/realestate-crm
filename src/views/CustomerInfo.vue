@@ -168,14 +168,13 @@ export default {
               event.date = event.date.toLocaleString();
             });
           console.log("Added");
-          store.commit("add_customer", { customer: this.customer });
+          store.commit("add_c1ustomer", { customer: this.customer });
           // Else => Edit current customer
         } else {
           if (this.customer.events)
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
-          console.log("Editted");
           store.commit("edit_customer", {
             id: this.customer.id,
             customer: this.customer,
