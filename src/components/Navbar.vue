@@ -11,7 +11,7 @@
     <button
       id="notification"
       type="button"
-      class="btn btn-primary position-absolute right"
+      class="btn btn-primary rounded-circle position-absolute right"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

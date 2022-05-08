@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
+    <!-- Modal -->
     <Modal :show="showModal" @save="save" @close="showModal = false">
       <template #header>
         <h3>Them lich hen</h3>
@@ -59,9 +59,11 @@
       </template>
     </Modal>
   </Teleport>
+  <!-- Table -->
   <div class="container-fluid px-4">
     <div class="row">
       <table class="table table-hover align-middle">
+        <!-- Header -->
         <thead>
           <tr>
             <th scope="col">Ten</th>
@@ -80,6 +82,7 @@
             </th>
           </tr>
         </thead>
+        <!-- Body -->
         <tbody>
           <tr v-for="(event, index) in events" :key="index">
             <td>
@@ -89,23 +92,13 @@
               <p>{{ event.email }}</p>
             </td>
             <td class="w-25">
-              <Datepicker v-model="event.event.date" :format="format" />
+              <p>{{ event.event.date }}</p>
             </td>
             <td>
-              <input
-                class="form-control"
-                type="text"
-                aria-label="default input example"
-                v-model="event.event.content"
-              />
+              <p>{{ event.event.content }}</p>
             </td>
             <td>
-              <input
-                class="form-control"
-                type="text"
-                aria-label="default input example"
-                v-model="event.event.progress"
-              />
+              <p>{{ event.event.progress }}</p>
             </td>
             <td>
               <router-link

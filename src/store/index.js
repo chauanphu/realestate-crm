@@ -9,7 +9,7 @@ export default createStore({
   },
   getters: {
     get_all_customers(state) {
-      return state.customers;
+      return [...state.customers];
     },
     get_all_events(state) {
       let events = [];
@@ -72,10 +72,6 @@ export default createStore({
       console.log(index_customer);
       state.customers[index_customer].events.push(payload.event);
       console.log(state.customers);
-      // let index_date = state.customers[index_customer].events.findIndex((event) => {
-      //   return event.date == payload.date;
-      // });
-      // state.customers[index_customer].events[index_date].date = payload
     },
   },
   actions: {},
