@@ -49,6 +49,7 @@ export default {
     // Get Customer Infos
     const customers = ref([]);
     store.getters.get_all_customers.then((value) => {
+      console.log(value);
       customers.value = value;
     });
 

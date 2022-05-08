@@ -5,7 +5,7 @@
 exports.up = function (knex) {
   return knex.schema
     .createTable("customers", (tbl) => {
-      tbl.increments(); // id
+      tbl.increments().notNullable; // id
       tbl.string("name", 50).notNullable();
       tbl.string("email", 20);
       tbl.string("phone", 15);

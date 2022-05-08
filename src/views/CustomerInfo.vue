@@ -61,7 +61,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="event in customer.events" :key="event.id">
+          <tr v-for="(event, index) in customer.events" :key="index">
             <td class="w-25">
               <Datepicker v-model="event.date" :format="format" />
             </td>
@@ -82,7 +82,7 @@
               />
             </td>
             <td>
-              <button class="btn btn-danger" @click="deleteEvent(event.id)">
+              <button class="btn btn-danger" @click="deleteEvent(index)">
                 Xoa
               </button>
             </td>
@@ -117,7 +117,8 @@ export default {
 
     if (route.params.id !== "new") {
       store.getters.get_customer(route.params.id).then((value) => {
-        customer.value = value[0];
+        console.log(value);
+        customer.value = value;
       });
     }
     //Format date picker
@@ -137,12 +138,12 @@ export default {
     /* EVENTS CRUD */
     // Add
     const addEvent = () => {
-      if (!customer.events) customer.events = [];
-      customer.events.push({ date: "", content: "", progress: "" });
+      if (!customer.value.events) customer.value.events = [];
+      customer.value.events.push({ date: "", content: "", progress: "" });
     };
     // Del
     const deleteEvent = (id) => {
-      customer.events.splice(id, 1);
+      customer.value.events.splice(id, 1);
     };
     return { customer, addEvent, deleteEvent, format, v$, route };
   },
@@ -175,7 +176,7 @@ export default {
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
-          console.log("Edited");
+          console.log("Editted");
           store.commit("edit_customer", {
             id: this.customer.id,
             customer: this.customer,

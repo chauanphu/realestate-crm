@@ -19,7 +19,10 @@ const Customers = {
    * @returns {Promise}
    */
   get_all() {
-    return knex.select().from("customers");
+    return knex
+      .from("customers")
+      .leftJoin("events", "customers.id", "=", "events.customer_id")
+      .options({ nestTables: true });
   },
   /**
    * Get customer info by id
@@ -27,7 +30,11 @@ const Customers = {
    * @returns {Promise}
    */
   get_by_id(id) {
-    return knex("customers").where("id", id);
+    return knex
+      .from("customers")
+      .leftJoin("events", "customers.id", "=", "events.customer_id")
+      .where("customers.id", id)
+      .options({ nestTables: true });
   },
   add(customer) {
     return knex("customers").insert(customer);
@@ -47,12 +54,21 @@ const Customers = {
 
 const Events = {
   get_all() {
-    return knex("events")
-      .join("customers", "events.customer_id", "=", "customers.id")
-      .select();
+    return knex("events").select();
+  },
+  get_by_id(id) {
+    return knex("events").where(id);
   },
   add(event) {
     return knex("events").insert(event);
+  },
+  /**
+   *
+   * @param {object} id id or customer_id
+   * @returns
+   */
+  delete(id) {
+    return knex("events").where(id).del();
   },
 };
 module.exports = { Customers, Events };

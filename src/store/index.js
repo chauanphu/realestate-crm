@@ -23,21 +23,23 @@ export default createStore({
       //seperate customer_info and event
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
-      db.Customers.add(_customer_).then(() => {
-        // Paste every events to database
-        if (events && events.length > 0)
-          events.forEach((element) => {
-            const _event_ = { customer_id: id[0], ...element };
-            db.Events.add(_event_).then((value) => console.log(value));
-          });
-      });
+      console.log(_customer_);
+      db.Customers.add(_customer_).then();
     },
     edit_customer(state, payload) {
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
-      console.log(events);
+      db.Customers.update(id, _customer_).then(() => {
+        if (events) {
+          // Clear all date
+          db.Events.delete({ customer_id: id });
+          // Add new dates
+          for (let i = 0; i < events.length; i++) {
+            db.Events.add({ customer_id: id, ...events[i] }).then();
+          }
+        }
+      });
       // const { id, ..._customer_ } = payload.customer;
-      // db.Customers.update(id, _customer_).then((value) => console.log(value));
     },
     /**
      * Delete customer by ID
