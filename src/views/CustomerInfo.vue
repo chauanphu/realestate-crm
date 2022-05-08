@@ -117,7 +117,6 @@ export default {
 
     if (route.params.id !== "new") {
       store.getters.get_customer(route.params.id).then((value) => {
-        console.log(value);
         customer.value = value;
       });
     }
@@ -168,7 +167,6 @@ export default {
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
-          console.log("Added");
           store.commit("add_customer", { customer: this.customer });
           // Else => Edit current customer
         } else {
@@ -182,7 +180,7 @@ export default {
             customer: this.customer,
           });
         }
-        this.$router.back();
+        //this.$router.back();
       }
     },
   },

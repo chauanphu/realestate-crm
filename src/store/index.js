@@ -20,7 +20,6 @@ export default createStore({
   },
   mutations: {
     add_customer(state, payload) {
-      //seperate customer_info and event
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
       console.log(_customer_);

@@ -18,23 +18,25 @@ const Customers = {
    * @param {string} params columns to be selected
    * @returns {Promise}
    */
-  get_all() {
-    return knex
-      .from("customers")
-      .leftJoin("events", "customers.id", "=", "events.customer_id")
-      .options({ nestTables: true });
+  async get_all() {
+    let customers = await knex.from("customers").select();
+    let value = [];
+    for (let i = 0; i < customers.length; i++) {
+      let events = await Events.get_by_id({ customer_id: customers[i].id });
+      value.push({ ...customers[i], events: events });
+    }
+    return value;
   },
   /**
    * Get customer info by id
    * @param {number} id
    * @returns {Promise}
    */
-  get_by_id(id) {
-    return knex
-      .from("customers")
-      .leftJoin("events", "customers.id", "=", "events.customer_id")
-      .where("customers.id", id)
-      .options({ nestTables: true });
+  async get_by_id(id) {
+    let customer = await knex("customers").where({ id: id });
+    let events = await Events.get_by_id({ customer_id: id });
+    let value = { ...customer[0], events: events };
+    return value;
   },
   add(customer) {
     return knex("customers").insert(customer);
