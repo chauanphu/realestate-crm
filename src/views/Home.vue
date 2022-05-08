@@ -126,12 +126,14 @@ import { ref } from "@vue/reactivity";
 
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+
 // Main Script
 export default {
   name: "Home",
   components: { Datepicker, Modal, vSelect },
   setup() {
     let events = ref([]);
+
     store.getters.get_all_events.then((value) => {
       events.value = value;
       console.log(value);

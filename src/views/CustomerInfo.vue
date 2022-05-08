@@ -167,6 +167,7 @@ export default {
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
+          console.log("Added");
           store.commit("add_customer", { customer: this.customer });
           // Else => Edit current customer
         } else {
