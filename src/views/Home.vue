@@ -131,8 +131,16 @@ export default {
   name: "Home",
   components: { Datepicker, Modal, vSelect },
   setup() {
-    const events = store.getters.get_all_events;
-    const identities = store.getters.get_all_identities;
+    let events = reactive([]);
+    store.getters.get_all_events.then((value) => {
+      events = value;
+    });
+
+    let identities = reactive([]);
+    store.getters.get_all_identities.then((value) => {
+      identities = value;
+      console.log();
+    });
 
     //Format date picker
     let format = ref(new Date());

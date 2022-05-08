@@ -1,47 +1,45 @@
 import { createStore } from "vuex";
+import db from "@/db";
+
+console.log();
 
 export default createStore({
-  state: {
-    customers: [
-      { id: 0, name: "A", email: "a@a.com", age: 25, events: [] },
-      { id: 1, name: "B", email: "b@b.com", age: 18, events: [] },
-    ],
-  },
   getters: {
-    get_all_customers(state) {
-      return [...state.customers];
+    get_all_customers() {
+      return db.Customers.get_all();
     },
-    get_all_events(state) {
-      let events = [];
+    get_all_events() {
+      // let events = [];
 
-      for (let i = 0; i < state.customers.length; i++) {
-        let customer = state.customers[i];
-        if (customer.events !== undefined) {
-          for (let h = 0; h < customer.events.length; h++) {
-            let event = customer.events[h];
-            let item = {
-              id: customer.id,
-              name: customer.name,
-              email: customer.email,
-              event: event,
-            };
-            events.push(item);
-          }
-        }
-      }
+      // for (let i = 0; i < state.customers.length; i++) {
+      //   let customer = state.customers[i];
+      //   if (customer.events !== undefined) {
+      //     for (let h = 0; h < customer.events.length; h++) {
+      //       let event = customer.events[h];
+      //       let item = {
+      //         id: customer.id,
+      //         name: customer.name,
+      //         email: customer.email,
+      //         event: event,
+      //       };
+      //       events.push(item);
+      //     }
+      //   }
+      // }
 
-      // If there is multiple events, return the upcoming
-      events.sort((a, b) => {
-        return new Date(a.date) - new Date(b.date);
-      });
-      return events;
+      // // If there is multiple events, return the upcoming
+      // events.sort((a, b) => {
+      //   return new Date(a.date) - new Date(b.date);
+      // });
+      // return events;
+      return db.Events.get_all();
     },
 
-    get_all_identities(state) {
-      let identity = state.customers.map((customer) => {
-        return { id: customer.id, name: customer.name, email: customer.email };
-      });
-      return identity;
+    get_all_identities() {
+      // let identity = state.customers.map((customer) => {
+      //   return { id: customer.id, name: customer.name, email: customer.email };
+      // });
+      return db.Customers.get_all("id", "name", "email");
     },
   },
   mutations: {
