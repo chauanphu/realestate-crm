@@ -92,13 +92,13 @@
               <p>{{ event.email }}</p>
             </td>
             <td class="w-25">
-              <p>{{ event.event.date }}</p>
+              <p>{{ event.date }}</p>
             </td>
             <td>
-              <p>{{ event.event.content }}</p>
+              <p>{{ event.content }}</p>
             </td>
             <td>
-              <p>{{ event.event.progress }}</p>
+              <p>{{ event.progress }}</p>
             </td>
             <td>
               <router-link
@@ -122,7 +122,7 @@ import Modal from "@/components/Modal.vue";
 import vSelect from "vue-select";
 
 import store from "@/store";
-import { reactive, ref } from "@vue/reactivity";
+import { ref } from "@vue/reactivity";
 
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
@@ -131,15 +131,15 @@ export default {
   name: "Home",
   components: { Datepicker, Modal, vSelect },
   setup() {
-    let events = reactive([]);
+    let events = ref([]);
     store.getters.get_all_events.then((value) => {
-      events = value;
+      events.value = value;
+      console.log(value);
     });
 
-    let identities = reactive([]);
+    let identities = ref([]);
     store.getters.get_all_identities.then((value) => {
-      identities = value;
-      console.log();
+      identities.value = value;
     });
 
     //Format date picker
@@ -155,7 +155,7 @@ export default {
     };
     const v$ = useVuelidate();
 
-    const customer = reactive({
+    const customer = ref({
       id: -1,
       name: "",
       email: "",
@@ -198,7 +198,9 @@ export default {
           event: this.customer.event,
         });
         this.showModal = false;
-        this.events = store.getters.get_all_events;
+        store.getters.get_all_events.then((value) => {
+          this.events = value;
+        });
       }
     },
   },

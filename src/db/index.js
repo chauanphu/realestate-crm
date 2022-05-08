@@ -38,8 +38,9 @@ const Customers = {
     let value = { ...customer[0], events: events };
     return value;
   },
-  add(customer) {
-    return knex("customers").insert(customer);
+  async add(customer) {
+    await knex("customers").insert(customer);
+    return await knex("customers").max("id");
   },
   update(id, customer) {
     return knex("customers").where({ id: id }).update(customer);
@@ -56,7 +57,16 @@ const Customers = {
 
 const Events = {
   get_all() {
-    return knex("events").select();
+    return knex("events")
+      .join("customers", "events.customer_id", "=", "customers.id")
+      .select(
+        "customers.id",
+        "customers.name",
+        "customers.email",
+        "events.date",
+        "events.content",
+        "events.progress"
+      );
   },
   get_by_id(id) {
     return knex("events").where(id);

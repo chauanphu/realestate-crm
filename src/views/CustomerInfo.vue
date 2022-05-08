@@ -180,7 +180,7 @@ export default {
             customer: this.customer,
           });
         }
-        //this.$router.back();
+        this.$router.back();
       }
     },
   },

@@ -22,8 +22,14 @@ export default createStore({
     add_customer(state, payload) {
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
-      console.log(_customer_);
-      db.Customers.add(_customer_).then();
+      db.Customers.add(_customer_).then((new_id) => {
+        if (events) {
+          // Add new dates
+          for (let i = 0; i < events.length; i++) {
+            db.Events.add({ customer_id: new_id, ...events[i] }).then();
+          }
+        }
+      });
     },
     edit_customer(state, payload) {
       // eslint-disable-next-line no-unused-vars
@@ -49,7 +55,7 @@ export default createStore({
       return db.Customers.delete(id).then();
     },
     add_event(state, payload) {
-      console.log(payload);
+      db.Events.add({ customer_id: payload.id, ...payload.event }).then();
     },
   },
   actions: {},
