@@ -60,7 +60,7 @@ export default {
           if (new Date(event.date) === new Date()) {
             let content = `${event.date}\n${event.name}\n${event.content}`;
             toast.info(content, {
-              timeout: 2000,
+              timeout: false,
               position: POSITION.BOTTOM_RIGHT,
             });
           }
@@ -76,11 +76,12 @@ export default {
     };
     const clear_due = () => {
       alarm_list.value.forEach((element) => {
+        // If found unalarmed event
         if (!element.alarmed) {
           element.alarmed = true;
           let content = `${element.date}\n${element.name}\n${element.content}`;
           toast.info(content, {
-            timeout: 2000,
+            timeout: false,
             position: POSITION.BOTTOM_RIGHT,
           });
         }

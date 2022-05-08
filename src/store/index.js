@@ -39,13 +39,15 @@ export default createStore({
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
       db.Customers.update(id, _customer_).then(() => {
-        // Clear all date
-        db.Events.delete({ customer_id: id });
         // Add new dates
         for (let i = 0; i < events.length; i++) {
           let event = events[i];
           db.Events.update({ customer_id: id, ...event });
         }
+      });
+      console.log(payload.deleted);
+      payload.deleted.forEach((id) => {
+        db.Events.delete({ id: id }).then();
       });
       // const { id, ..._customer_ } = payload.customer;
     },

@@ -82,7 +82,10 @@
               />
             </td>
             <td>
-              <button class="btn btn-danger" @click="deleteEvent(index)">
+              <button
+                class="btn btn-danger"
+                @click="deleteEvent(index, event.id)"
+              >
                 Xoa
               </button>
             </td>
@@ -114,6 +117,7 @@ export default {
       age: 0,
       events: [],
     });
+    const deleted_events = ref([]);
 
     if (route.params.id !== "new") {
       store.getters.get_customer(route.params.id).then((value) => {
@@ -141,10 +145,26 @@ export default {
       customer.value.events.push({ date: "", content: "", progress: "" });
     };
     // Del
-    const deleteEvent = (id) => {
-      customer.value.events.splice(id, 1);
+    const deleteEvent = (index, id) => {
+      customer.value.events.splice(index, 1);
+      if (
+        !deleted_events.value.find((event_id) => {
+          return event_id == id;
+        })
+      ) {
+        deleted_events.value.push(id);
+        console.log(deleted_events);
+      }
     };
-    return { customer, addEvent, deleteEvent, format, v$, route };
+    return {
+      customer,
+      addEvent,
+      deleteEvent,
+      format,
+      v$,
+      route,
+      deleted_events,
+    };
   },
   validations() {
     return {
@@ -175,9 +195,12 @@ export default {
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
+          console.log(this.deleted_events);
+
           store.commit("edit_customer", {
             id: this.customer.id,
             customer: this.customer,
+            deleted: this.deleted_events,
           });
         }
         this.$router.back();
