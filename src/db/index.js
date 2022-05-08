@@ -18,20 +18,30 @@ const Customers = {
    * @param {string} params columns to be selected
    * @returns {Promise}
    */
-  get_all(params = "") {
-    return knex.select(params).from("customers");
+  get_all() {
+    return knex.select().from("customers");
   },
   /**
    * Get customer info by id
-   * @param {*} id
-   * @returns
+   * @param {number} id
+   * @returns {Promise}
    */
   get_by_id(id) {
     return knex("customers").where("id", id);
   },
   add(customer) {
-    knex("customers").insert(customer);
-    return knex.select("id").from("customers");
+    return knex("customers").insert(customer);
+  },
+  update(id, customer) {
+    return knex("customers").where({ id: id }).update(customer);
+  },
+  /**
+   *
+   * @param {number} id
+   * @returns {Promise}
+   */
+  delete(id) {
+    return knex("customers").where({ id: id }).del();
   },
 };
 
@@ -40,6 +50,9 @@ const Events = {
     return knex("events")
       .join("customers", "events.customer_id", "=", "customers.id")
       .select();
+  },
+  add(event) {
+    return knex("events").insert(event);
   },
 };
 module.exports = { Customers, Events };

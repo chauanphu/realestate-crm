@@ -97,7 +97,7 @@
 import Datepicker from "@vuepic/vue-datepicker";
 import store from "@/store";
 import { useRoute } from "vue-router";
-import { reactive, ref } from "@vue/reactivity";
+import { ref } from "@vue/reactivity";
 import useVuelidate from "@vuelidate/core";
 import { minValue, required, email } from "@vuelidate/validators";
 
@@ -106,7 +106,7 @@ export default {
   setup() {
     /* Set up */
     const route = useRoute();
-    let customer = reactive({
+    const customer = ref({
       id: -1,
       name: "",
       email: "",
@@ -114,19 +114,12 @@ export default {
       age: 0,
       events: [],
     });
-    if (route.params.id != "new") {
-      customer = store.state.customers.find((customer) => {
-        return customer.id == route.params.id;
+
+    if (route.params.id !== "new") {
+      store.getters.get_customer(route.params.id).then((value) => {
+        customer.value = value[0];
       });
-    } else {
-      let length = store.state.customers.length;
-      if (length > 0) {
-        customer.id = store.state.customers[length - 1].id + 1;
-      } else {
-        customer.id = 0;
-      }
     }
-    console.log("This id is:", customer.id);
     //Format date picker
     let format = ref(new Date());
     format = (date) => {
@@ -167,16 +160,22 @@ export default {
       // Validate the form
       this.v$.$validate();
       if (!this.v$.customer.$error) {
+        // If this customer has no id => Create new
         if (this.route.params.id == "new") {
+          // Check if has events then convert to local string
           if (this.customer.events)
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
+          console.log("Added");
           store.commit("add_customer", { customer: this.customer });
+          // Else => Edit current customer
         } else {
-          this.customer.events.forEach((event) => {
-            event.date = event.date.toLocaleString();
-          });
+          if (this.customer.events)
+            this.customer.events.forEach((event) => {
+              event.date = event.date.toLocaleString();
+            });
+          console.log("Edited");
           store.commit("edit_customer", {
             id: this.customer.id,
             customer: this.customer,

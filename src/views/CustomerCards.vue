@@ -43,15 +43,16 @@
 
 <script>
 import store from "@/store";
+import { ref } from "@vue/reactivity";
 export default {
   setup() {
     // Get Customer Infos
-    const customers = store.getters.get_all_customers;
+    const customers = ref([]);
+    store.getters.get_all_customers.then((value) => {
+      customers.value = value;
+    });
 
-    const delete_customer = (id) => {
-      store.commit("delete_customer", id);
-    };
-    return { customers, delete_customer };
+    return { customers };
   },
   methods: {
     // Choose the closes day
@@ -70,6 +71,12 @@ export default {
       });
 
       return newest[0];
+    },
+    delete_customer(id) {
+      store.commit("delete_customer", id);
+      store.getters.get_all_customers.then((value) => {
+        this.customers = value;
+      });
     },
   },
 };

@@ -1,56 +1,43 @@
 import { createStore } from "vuex";
 import db from "@/db";
 
-console.log();
-
 export default createStore({
   getters: {
+    // eslint-disable-next-line no-unused-vars
+    get_customer: (state) => (id) => {
+      return db.Customers.get_by_id(id);
+    },
     get_all_customers() {
       return db.Customers.get_all();
     },
     get_all_events() {
-      // let events = [];
-
-      // for (let i = 0; i < state.customers.length; i++) {
-      //   let customer = state.customers[i];
-      //   if (customer.events !== undefined) {
-      //     for (let h = 0; h < customer.events.length; h++) {
-      //       let event = customer.events[h];
-      //       let item = {
-      //         id: customer.id,
-      //         name: customer.name,
-      //         email: customer.email,
-      //         event: event,
-      //       };
-      //       events.push(item);
-      //     }
-      //   }
-      // }
-
-      // // If there is multiple events, return the upcoming
-      // events.sort((a, b) => {
-      //   return new Date(a.date) - new Date(b.date);
-      // });
-      // return events;
       return db.Events.get_all();
     },
 
     get_all_identities() {
-      // let identity = state.customers.map((customer) => {
-      //   return { id: customer.id, name: customer.name, email: customer.email };
-      // });
       return db.Customers.get_all("id", "name", "email");
     },
   },
   mutations: {
     add_customer(state, payload) {
-      state.customers.push(payload.customer);
+      //seperate customer_info and event
+      // eslint-disable-next-line no-unused-vars
+      const { id, events, ..._customer_ } = payload.customer;
+      db.Customers.add(_customer_).then(() => {
+        // Paste every events to database
+        if (events && events.length > 0)
+          events.forEach((element) => {
+            const _event_ = { customer_id: id[0], ...element };
+            db.Events.add(_event_).then((value) => console.log(value));
+          });
+      });
     },
     edit_customer(state, payload) {
-      let index = state.customers.findIndex((customer) => {
-        return customer.id == payload.id;
-      });
-      state.customers[index] = payload.customer;
+      // eslint-disable-next-line no-unused-vars
+      const { id, events, ..._customer_ } = payload.customer;
+      console.log(events);
+      // const { id, ..._customer_ } = payload.customer;
+      // db.Customers.update(id, _customer_).then((value) => console.log(value));
     },
     /**
      * Delete customer by ID
@@ -58,18 +45,10 @@ export default createStore({
      * @param {*} id
      */
     delete_customer(state, id) {
-      let index = state.customers.findIndex((customer) => {
-        return customer.id == id;
-      });
-      if (index > -1) state.customers.splice(index, 1);
+      return db.Customers.delete(id).then();
     },
     add_event(state, payload) {
-      let index_customer = state.customers.findIndex((customer) => {
-        return customer.id == payload.id;
-      });
-      console.log(index_customer);
-      state.customers[index_customer].events.push(payload.event);
-      console.log(state.customers);
+      console.log(payload);
     },
   },
   actions: {},
