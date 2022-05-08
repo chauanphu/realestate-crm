@@ -9,6 +9,7 @@
       </li>
     </ul>
     <button
+      @click="clear_due"
       id="notification"
       type="button"
       class="btn btn-primary rounded-circle position-absolute right"
@@ -26,39 +27,67 @@
         />
       </svg>
       <span
+        v-if="
+          alarm_list.filter((element) => {
+            return !element.alarmed;
+          }).length > 0
+        "
         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
       >
-        99+
+        {{
+          alarm_list.filter((element) => {
+            return !element.alarmed;
+          }).length
+        }}
       </span>
     </button>
   </nav>
 </template>
 
 <script>
-// import store from "@/store";
-// import { useToast, POSITION } from "vue-toastification";
+import store from "@/store";
+import { useToast, POSITION } from "vue-toastification";
+import { ref } from "@vue/reactivity";
 
 export default {
   name: "Navbar",
   setup() {
-    // const toast = useToast();
-
-    // const alarm_check = () => {
-    //   store.getters.get_all_events.then((events) => {
-    //     console.log(events);
-    //     events.forEach((event) => {
-    //       if (new Date(event.date) === new Date()) {
-    //         toast.info("My toast content", {
-    //           timeout: 2000,
-    //           position: POSITION.BOTTOM_RIGHT,
-    //         });
-    //       }
-    //     });
-    //   });
-    // };
-
-    // setInterval(alarm_check, 1000);
-    return {};
+    const toast = useToast();
+    const alarm_list = ref([]);
+    const alarm_check = () => {
+      store.getters.get_all_events.then((events) => {
+        events.forEach((event) => {
+          if (new Date(event.date) === new Date()) {
+            let content = `${event.date}\n${event.name}\n${event.content}`;
+            toast.info(content, {
+              timeout: 2000,
+              position: POSITION.BOTTOM_RIGHT,
+            });
+          }
+          if (new Date(event.date) <= new Date()) {
+            // Only added when there aren't alarmed event in list
+            let check = alarm_list.value.find((element) => {
+              return element.id == event.id || element.alarmed;
+            });
+            if (!check) alarm_list.value.push({ ...event, alarmed: false });
+          }
+        });
+      });
+    };
+    const clear_due = () => {
+      alarm_list.value.forEach((element) => {
+        if (!element.alarmed) {
+          element.alarmed = true;
+          let content = `${element.date}\n${element.name}\n${element.content}`;
+          toast.info(content, {
+            timeout: 2000,
+            position: POSITION.BOTTOM_RIGHT,
+          });
+        }
+      });
+    };
+    setInterval(alarm_check, 1000);
+    return { alarm_list, clear_due };
   },
 };
 </script>
