@@ -45,7 +45,6 @@ export default createStore({
           db.Events.update({ customer_id: id, ...event });
         }
       });
-      console.log(payload.deleted);
       payload.deleted.forEach((id) => {
         db.Events.delete({ id: id }).then();
       });

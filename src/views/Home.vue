@@ -136,7 +136,6 @@ export default {
 
     store.getters.get_all_events.then((value) => {
       events.value = value;
-      console.log(value);
     });
 
     let identities = ref([]);

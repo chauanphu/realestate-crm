@@ -57,19 +57,15 @@ export default {
     const alarm_check = () => {
       store.getters.get_all_events.then((events) => {
         events.forEach((event) => {
-          if (new Date(event.date) === new Date()) {
-            let content = `${event.date}\n${event.name}\n${event.content}`;
-            toast.info(content, {
-              timeout: false,
-              position: POSITION.BOTTOM_RIGHT,
-            });
-          }
+          console.log(event.date);
           if (new Date(event.date) <= new Date()) {
-            // Only added when there aren't alarmed event in list
+            // Only added when there aren't existing event in list
             let check = alarm_list.value.find((element) => {
-              return element.id == event.id || element.alarmed;
+              return element.event_id == event.event_id;
             });
-            if (!check) alarm_list.value.push({ ...event, alarmed: false });
+            if (check === undefined) {
+              alarm_list.value.push({ ...event, alarmed: false });
+            }
           }
         });
       });

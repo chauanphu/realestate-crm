@@ -63,6 +63,7 @@ const Events = {
         "customers.id",
         "customers.name",
         "customers.email",
+        "events.id as event_id",
         "events.date",
         "events.content",
         "events.progress"

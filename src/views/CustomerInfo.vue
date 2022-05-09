@@ -153,9 +153,9 @@ export default {
         })
       ) {
         deleted_events.value.push(id);
-        console.log(deleted_events);
       }
     };
+
     return {
       customer,
       addEvent,
@@ -195,7 +195,7 @@ export default {
             this.customer.events.forEach((event) => {
               event.date = event.date.toLocaleString();
             });
-          console.log(this.deleted_events);
+          console.log("Editted");
 
           store.commit("edit_customer", {
             id: this.customer.id,
@@ -203,6 +203,7 @@ export default {
             deleted: this.deleted_events,
           });
         }
+
         this.$router.back();
       }
     },
