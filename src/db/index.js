@@ -1,6 +1,6 @@
 const isDevelopment = process.env.NODE_ENV !== "production";
 const file_path = isDevelopment
-  ? "src/db/customers.sqlite3"
+  ? "src/db/_customers_.sqlite3"
   : "resources/customers.sqlite3";
 
 const knex = require("knex")({
@@ -40,7 +40,7 @@ const Customers = {
   },
   async add(customer) {
     await knex("customers").insert(customer);
-    return await knex("customers").max("id");
+      return await knex("customers").max("id", {as: 'id'});
   },
   update(id, customer) {
     return knex("customers").where({ id: id }).update(customer);
@@ -78,13 +78,13 @@ const Events = {
   async update(event) {
     let check = await this.get_by_id(event);
     // If do not have id => Add
-    if (!event.id) {
-      return knex("events").insert(event);
+      if (!event.id) {
+      return await knex("events").insert(event);
       // If there is no record completely matched
     } else if (check.length == 0) {
       let { id, ..._event_ } = event;
       console.log("updated");
-      return knex("events").where({ id: id }).update(_event_);
+      return await knex("events").where({ id: id }).update(_event_);
     } else {
       console.log("skipped");
     }

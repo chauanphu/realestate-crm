@@ -57,7 +57,6 @@ export default {
     const alarm_check = () => {
       store.getters.get_all_events.then((events) => {
         events.forEach((event) => {
-          console.log(event.date);
           if (new Date(event.date) <= new Date()) {
             // Only added when there aren't existing event in list
             let check = alarm_list.value.find((element) => {

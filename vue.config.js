@@ -8,7 +8,7 @@ module.exports = {
         appId: "com.electron.realestate",
         productName: "Customer Manager 4.0",
         executableName: "Customer Manager 4.0",
-        extraResources: [{ from: "src/db", to: "./", filter: "**/*.sqlite3" }],
+        extraResources: [{ from: "src/db", to: "./", filter: "**/customer.sqlite3" }],
         linux: {
           target: "deb",
           icon: "bundled/favicon.ico",

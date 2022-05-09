@@ -26,11 +26,11 @@ export default createStore({
       // eslint-disable-next-line no-unused-vars
       const { id, events, ..._customer_ } = payload.customer;
       db.Customers.add(_customer_).then((new_id) => {
-        if (events) {
+          if (events) {
           // Add new dates
           for (let i = 0; i < events.length; i++) {
-            let event = events[i];
-            db.Events.update({ customer_id: new_id, ...event });
+              let event = events[i];
+              db.Events.update({ customer_id: new_id[0].id, ...event });
           }
         }
       });

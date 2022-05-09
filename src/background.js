@@ -19,7 +19,7 @@ async function createWindow() {
     width: 1400,
     height: 800,
     webPreferences: {
-      //devTools: false,
+      devTools: isDevelopment,
       // Required for Spectron testing
       enableRemoteModule: true,
 
@@ -28,7 +28,6 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
     },
-    resizable: false,
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
