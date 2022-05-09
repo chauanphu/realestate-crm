@@ -1,7 +1,7 @@
 const isDevelopment = process.env.NODE_ENV !== "production";
 const file_path = isDevelopment
   ? "src/db/customers.sqlite3"
-  : "linux-unpacked/resources/customers.sqlite3";
+  : "resources/customers.sqlite3";
 
 const knex = require("knex")({
   client: "sqlite3", // or 'better-sqlite3'
