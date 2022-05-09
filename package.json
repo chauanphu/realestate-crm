@@ -1,7 +1,16 @@
 {
-  "name": "app",
-  "version": "0.1.0",
+  "name": "customer-manager",
+  "version": "1.0.0-beta",
   "private": true,
+  "author": {
+    "name": "Chau An Phu",
+    "email": "chauanphu@gmail.com"
+  },
+  "description": "An Application for managing customer ID and set reminder for meeting",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chauanphu/realestate-crm.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
