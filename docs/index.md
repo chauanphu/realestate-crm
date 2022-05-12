@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Customer Manager 4.0
 
 You can use the [editor on GitHub](https://github.com/chauanphu/realestate-crm/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
