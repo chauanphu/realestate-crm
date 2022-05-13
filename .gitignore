@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+#Database
+src/db/*sqlite3
 
 # local env files
 .env.local
